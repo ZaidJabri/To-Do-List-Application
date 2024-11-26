@@ -1,0 +1,42 @@
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+}
+
+.task-form input[type="text"] {
+    width: 80%;
+    margin-right: 10px;
+}
+
+.task-card {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-custom {
+    font-size: 0.9rem;
+}
+.bg-secondary-light {
+    background-color: #e9ecef; 
+    color: #343a40; 
+}

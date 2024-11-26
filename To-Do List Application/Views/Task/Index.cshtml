@@ -1,0 +1,117 @@
+﻿<div class="container mt-5">
+    <h2 class="text-center mb-4">To-Do List</h2>
+
+    <div class="task-form mb-4">
+        <form id="taskForm" class="d-flex justify-content-center">
+            <input type="text" id="taskTitle" class="form-control me-2" placeholder="Add a new task" maxlength="100" required />
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+
+    <h3 class="mb-3" id="pendingHeader">Pending Tasks</h3>
+
+        <div id="pendingTasks" class="mb-4">
+        </div>
+
+    <h3 class="mb-3" id="completedHeader">Completed Tasks</h3>
+
+        <div id="completedTasks">
+        </div>
+
+    
+</div>
+
+<script>
+    renderTasks();
+
+    function getTasks() {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        return tasks;
+    }
+
+    function saveTasks(tasks) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+        const tasks = getTasks();
+        const pendingTasksContainer = document.getElementById("pendingTasks");
+        const completedTasksContainer = document.getElementById("completedTasks");
+
+        pendingTasksContainer.innerHTML = "";
+        completedTasksContainer.innerHTML = "";
+
+        const pendingHeader = document.getElementById("pendingHeader");
+        const completedHeader = document.getElementById("completedHeader");
+
+        pendingHeader.style.display = "none";
+        completedHeader.style.display = "none";
+
+        tasks.forEach(task => {
+            const taskElement = document.createElement("div");
+            taskElement.className = "task-card d-flex justify-content-between align-items-center";
+            taskElement.innerHTML = `
+                <span>${task.title}</span>
+                <div class="d-flex align-items-center">
+                    <div class="form-check d-flex align-items-center">
+                        <input type="checkbox" ${task.completed ? "checked" : ""} class="form-check-input me-2" onchange="toggleTaskStatus(${task.id})" />
+                        <label class="form-check-label">${task.completed ? "Completed" : "Mark As Completed"}</label>
+                    </div>
+                    <button class="btn btn-danger btn-sm btn-custom ms-2" onclick="deleteTask(${task.id})">Delete</button>
+                </div>
+            `;
+
+            if (task.completed) {
+                taskElement.classList.add("bg-secondary-light");
+                completedTasksContainer.appendChild(taskElement);
+            } else {
+                pendingTasksContainer.appendChild(taskElement);
+            }
+        });
+
+        if (pendingTasksContainer.children.length > 0) {
+            pendingHeader.style.display = "block";
+        }
+        if (completedTasksContainer.children.length > 0) {
+            completedHeader.style.display = "block";
+        }
+    }
+
+
+    function addTask(title) {
+        const tasks = getTasks();
+        const newTask = { id: Date.now(), title, completed: false };
+        tasks.push(newTask);
+        saveTasks(tasks);
+        renderTasks();
+    }
+
+    function toggleTaskStatus(id) {
+        const tasks = getTasks();
+        const task = tasks.find(task => task.id === id);
+        if (task) {
+            task.completed = !task.completed;
+            saveTasks(tasks);
+            renderTasks();
+        }
+    }
+
+    function deleteTask(id) {
+        const tasks = getTasks();
+        const updatedTasks = tasks.filter(task => task.id !== id);
+        saveTasks(updatedTasks);
+        renderTasks();
+    }
+
+    document.getElementById("taskForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const taskTitle = document.getElementById("taskTitle").value.trim();
+        if (taskTitle) {
+            addTask(taskTitle);
+            document.getElementById("taskTitle").value = "";
+        }
+    });
+
+  
+</script>
