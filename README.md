@@ -15,6 +15,6 @@ The approach I have used involves the following steps:
 4- Implement the Index View, where I created the necessary logic to store tasks in a List without persisting the data.
 
 # Optional Enhancements:
-I added functionality to persist the data in Local Storage, along with basic validation.
+I added functionality to persist the data in Local Storage, along with basic validation and styling.
 # Note
 In the Index View, you will find only the logic for persisting the data.
